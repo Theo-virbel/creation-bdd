@@ -84,3 +84,89 @@ print("Clients ayant consenti à recevoir des communications marketing :")
 for client in clients_consentement:
     print(f"Nom: {client[0]}, Prénom: {client[1]}, Email: {client[2]}, Téléphone: {client[3]}, Adresse: {client[4]}")
 
+# Fonction pour obtenir l'ID d'un client par son nom et prénom
+def obtenir_client_id(nom, prenom):
+    cursor.execute('''
+    SELECT Client_ID FROM Client
+    WHERE Nom = ? AND Prenom = ?
+    ''', (nom, prenom))
+    result = cursor.fetchone()  # Récupérer le premier résultat
+    return result[0] if result else None  # Retourner l'ID ou None si le client n'existe pas
+
+# Fonction pour récupérer les commandes d'un client spécifique par son ID
+def extraire_commandes_client_id(client_id):
+    cursor.execute('''
+    SELECT Commande_ID, Date_Commande, Montant_Commande
+    FROM Commande
+    WHERE Client_ID = ?
+    ''', (client_id,))
+    commandes = cursor.fetchall()  # Récupérer toutes les commandes du client
+    return commandes
+
+#récupérer les commandes du client 
+nom_client = 'Martin'
+prenom_client = 'Claire'
+client_id = obtenir_client_id(nom_client, prenom_client)
+
+if client_id:
+    commandes_client = extraire_commandes_client_id(client_id)
+    print(f"Commandes du client {nom_client} {prenom_client} (ID {client_id}) :")
+    for commande in commandes_client:
+        print(f"Commande ID: {commande[0]}, Date: {commande[1]}, Montant: {commande[2]} €")
+else:
+    print(f"Aucun client trouvé avec le nom {nom_client} et le prénom {prenom_client}.")
+
+    # Fonction pour obtenir le montant total des commandes d'un client par son ID
+def obtenir_montant_total_commandes(client_id):
+    cursor.execute('''
+    SELECT SUM(Montant_Commande) FROM Commande
+    WHERE Client_ID = ?
+    ''', (client_id,))
+    total = cursor.fetchone()[0]  # Récupérer le total
+    return total if total is not None else 0  # Retourner le total ou 0 si aucune commande
+
+# ID du client dont on veut le montant total des commandes
+client_id = 61
+montant_total = obtenir_montant_total_commandes(client_id)
+
+print(f"Montant total des commandes pour le client avec ID n° {client_id} : {montant_total} €")
+
+# Fonction pour obtenir les clients ayant passé des commandes de plus de 100 euros
+def obtenir_clients_commandes_plus_de_100():
+    cursor.execute('''
+    SELECT DISTINCT c.Client_ID, c.Nom, c.Prenom
+    FROM Client c
+    JOIN Commande cmd ON c.Client_ID = cmd.Client_ID
+    WHERE cmd.Montant_Commande > 100
+    ''')
+    return cursor.fetchall()  # Récupérer tous les résultats
+
+# Appel de la fonction et affichage des résultats
+clients = obtenir_clients_commandes_plus_de_100()
+
+print("Clients ayant passé des commandes de plus de 100 euros :")
+for client in clients:
+    print(f"ID: {client[0]}, Nom: {client[1]}, Prénom: {client[2]}")
+
+# Fonction pour obtenir les clients ayant passé des commandes après le 01/01/2023
+def obtenir_clients_commandes_apres_date(date):
+    cursor.execute('''
+    SELECT DISTINCT c.Client_ID, c.Nom, c.Prenom
+    FROM Client c
+    JOIN Commande cmd ON c.Client_ID = cmd.Client_ID
+    WHERE cmd.Date_Commande > ?
+    ''', (date,))
+    return cursor.fetchall()  # Récupérer tous les résultats
+
+# Définir la date à partir de laquelle on veut filtrer
+date_limite = '2023-01-01'
+
+# Appel de la fonction et affichage des résultats
+clients = obtenir_clients_commandes_apres_date(date_limite)
+
+print("Clients ayant passé des commandes après le 01/01/2023 :")
+for client in clients:
+    print(f"ID: {client[0]}, Nom: {client[1]}, Prénom: {client[2]}")
+
+# Fermer la connexion à la base de données
+conn.close()
