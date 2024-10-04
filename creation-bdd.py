@@ -7,7 +7,7 @@ conn = sqlite3.connect('creation-bdd.db')
 # Créer un curseur
 cursor = conn.cursor()
 
-# Création de la table Client
+# Création de la table Client  
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Client (
     Client_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,141 +32,129 @@ CREATE TABLE IF NOT EXISTS Commande (
 );
 ''')
 
-# Fonction pour insérer les clients dans la table Client
-def inserer_clients(client):
-    with open(client, newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)  # Sauter l'en-tête du fichier CSV
-        for row in reader:
-            # Vérification qu'il y a bien 7 colonnes et que la ligne n'est pas vide
-            if len(row) == 7:
-                cursor.execute('''
-                INSERT OR IGNORE INTO Client (Nom, Prenom, Email, Telephone, Date_Naissance, Adresse, Consentement_Marketing)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-                ''', (row[0], row[1], row[2], row[3], row[4], row[5], row[6]))
-            else:
-                print(f"Ligne incorrecte ou incomplète : {row}")
+# Importation des données à partir du fichier client.csv
+try:
+    with open('client.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        clients_data = [(row['Nom'], row['Prénom'], row['Email'], row['Téléphone'], row['Date_Naissance'], row['Adresse'], row['Consentement_Marketing']) for row in reader]
+
+    # Insertion des données dans la table Client (ignorer les doublons)
+    cursor.executemany('''
+    INSERT OR IGNORE INTO Client (Nom, Prenom, Email, Telephone, Date_Naissance, Adresse, Consentement_Marketing)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', clients_data)
+
+    # Valider les changements pour la table Client
     conn.commit()
+    print("Données des clients importées avec succès.")
 
-# Fonction pour insérer les commandes dans la table Commande
-def inserer_commandes(commande):
-    with open(commande, newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)  # Sauter l'en-tête du fichier CSV
-        for row in reader:
-            # Vérification qu'il y a bien 3 colonnes et que la ligne n'est pas vide
-            if len(row) == 3:
-                cursor.execute('''
-                INSERT INTO Commande (Date_Commande, Montant_Commande, Client_ID)
-                VALUES (?, ?, ?)
-                ''', (row[0], row[1], row[2]))
-            else:
-                print(f"Ligne incorrecte ou incomplète : {row}")
+    # Importation des données à partir du fichier commande.csv
+    with open('commande.csv', newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        commandes_data = [(row['Commande_ID'], row['Date_Commande'], row['Montant_Commande'], row['Client_ID']) for row in reader]
+
+    # Insertion des données dans la table Commande (remplacer les doublons)
+    cursor.executemany('''
+    INSERT OR REPLACE INTO Commande (Commande_ID, Date_Commande, Montant_Commande, Client_ID)
+    VALUES (?, ?, ?, ?)
+    ''', commandes_data)
+
+    # Valider les changements pour la table Commande
     conn.commit()
+    print("Données des commandes importées avec succès.")
 
-# Appel des fonctions pour insérer les données depuis les fichiers CSV
-inserer_clients('client.csv')
-inserer_commandes('commande.csv')
-
-# Fonction pour récupérer les clients ayant consenti à recevoir des communications marketing
-def extraire_clients_consentement_marketing():
+    # Récupérer les clients ayant consenti à recevoir des communications marketing
     cursor.execute('''
-    SELECT Nom, Prenom, Email, Telephone, Adresse
-    FROM Client
-    WHERE Consentement_Marketing = 1
+    SELECT * FROM Client
+    WHERE Consentement_Marketing = 1;  -- 1 pour "True"
     ''')
-    clients = cursor.fetchall()  # Récupérer tous les résultats
-    return clients
 
-# Appel de la fonction et affichage des résultats
-clients_consentement = extraire_clients_consentement_marketing()
-print("Clients ayant consenti à recevoir des communications marketing :")
-for client in clients_consentement:
-    print(f"Nom: {client[0]}, Prénom: {client[1]}, Email: {client[2]}, Téléphone: {client[3]}, Adresse: {client[4]}")
+    # Récupérer les résultats
+    clients_marketing = cursor.fetchall()
 
-# Fonction pour obtenir l'ID d'un client par son nom et prénom
-def obtenir_client_id(nom, prenom):
+    # Afficher les clients
+    if clients_marketing:
+        print("Clients ayant consenti à recevoir des communications marketing :")
+        for client in clients_marketing:
+            print(f"ID : {client[0]}, Nom : {client[1]}, Prénom : {client[2]}, Email : {client[3]}, Téléphone : {client[4]}")
+    else:
+        print("Aucun client n'a consenti à recevoir des communications marketing.")
+
+    # Demander l'ID du client spécifique
+    client_id = 61  # Remplacez par l'ID du client dont vous voulez voir les commandes
+
+    # Récupérer les commandes du client spécifique
     cursor.execute('''
-    SELECT Client_ID FROM Client
-    WHERE Nom = ? AND Prenom = ?
-    ''', (nom, prenom))
-    result = cursor.fetchone()  # Récupérer le premier résultat
-    return result[0] if result else None  # Retourner l'ID ou None si le client n'existe pas
-
-# Fonction pour récupérer les commandes d'un client spécifique par son ID
-def extraire_commandes_client_id(client_id):
-    cursor.execute('''
-    SELECT Commande_ID, Date_Commande, Montant_Commande
-    FROM Commande
-    WHERE Client_ID = ?
+    SELECT * FROM Commande
+    WHERE Client_ID = ?;
     ''', (client_id,))
-    commandes = cursor.fetchall()  # Récupérer toutes les commandes du client
-    return commandes
 
-#récupérer les commandes du client 
-nom_client = 'Martin'
-prenom_client = 'Claire'
-client_id = obtenir_client_id(nom_client, prenom_client)
+    # Récupérer les résultats
+    commandes_client = cursor.fetchall()
 
-if client_id:
-    commandes_client = extraire_commandes_client_id(client_id)
-    print(f"Commandes du client {nom_client} {prenom_client} (ID {client_id}) :")
-    for commande in commandes_client:
-        print(f"Commande ID: {commande[0]}, Date: {commande[1]}, Montant: {commande[2]} €")
-else:
-    print(f"Aucun client trouvé avec le nom {nom_client} et le prénom {prenom_client}.")
+    # Afficher les commandes
+    if commandes_client:
+        print(f"Commandes du client avec ID {client_id} :")
+        for commande in commandes_client:
+            print(f"Commande ID : {commande[0]}, Date : {commande[1]}, Montant : {commande[2]}")
+    else:
+        print(f"Aucune commande trouvée pour le client avec ID {client_id}.")
 
-    # Fonction pour obtenir le montant total des commandes d'un client par son ID
-def obtenir_montant_total_commandes(client_id):
+    # Calculer le montant total des commandes du client avec ID n° 61
     cursor.execute('''
     SELECT SUM(Montant_Commande) FROM Commande
-    WHERE Client_ID = ?
+    WHERE Client_ID = ?;
     ''', (client_id,))
-    total = cursor.fetchone()[0]  # Récupérer le total
-    return total if total is not None else 0  # Retourner le total ou 0 si aucune commande
 
-# ID du client dont on veut le montant total des commandes
-client_id = 61
-montant_total = obtenir_montant_total_commandes(client_id)
+    total_montant = cursor.fetchone()[0]
 
-print(f"Montant total des commandes pour le client avec ID n° {client_id} : {montant_total} €")
+    if total_montant is not None:
+        print(f"Le montant total des commandes du client avec ID {client_id} est : {total_montant:.2f} euros.")
+    else:
+        print(f"Aucune commande trouvée pour le client avec ID {client_id}, donc le montant total est 0 euros.")
 
-# Fonction pour obtenir les clients ayant passé des commandes de plus de 100 euros
-def obtenir_clients_commandes_plus_de_100():
+    # Récupérer les clients ayant passé des commandes de plus de 100 euros
     cursor.execute('''
     SELECT DISTINCT c.Client_ID, c.Nom, c.Prenom
     FROM Client c
-    JOIN Commande cmd ON c.Client_ID = cmd.Client_ID
-    WHERE cmd.Montant_Commande > 100
+    JOIN Commande co ON c.Client_ID = co.Client_ID
+    WHERE co.Montant_Commande > 100;
     ''')
-    return cursor.fetchall()  # Récupérer tous les résultats
 
-# Appel de la fonction et affichage des résultats
-clients = obtenir_clients_commandes_plus_de_100()
+    # Récupérer les résultats
+    clients_100euros = cursor.fetchall()
 
-print("Clients ayant passé des commandes de plus de 100 euros :")
-for client in clients:
-    print(f"ID: {client[0]}, Nom: {client[1]}, Prénom: {client[2]}")
+    # Afficher les clients
+    if clients_100euros:
+        print("Clients ayant passé des commandes de plus de 100 euros :")
+        for client in clients_100euros:
+            print(f"ID : {client[0]}, Nom : {client[1]}, Prénom : {client[2]}")
+    else:
+        print("Aucun client n'a passé de commandes de plus de 100 euros.")
 
-# Fonction pour obtenir les clients ayant passé des commandes après le 01/01/2023
-def obtenir_clients_commandes_apres_date(date):
+    # Récupérer les clients ayant passé des commandes après le 01/01/2023
     cursor.execute('''
     SELECT DISTINCT c.Client_ID, c.Nom, c.Prenom
     FROM Client c
-    JOIN Commande cmd ON c.Client_ID = cmd.Client_ID
-    WHERE cmd.Date_Commande > ?
-    ''', (date,))
-    return cursor.fetchall()  # Récupérer tous les résultats
+    JOIN Commande co ON c.Client_ID = co.Client_ID
+    WHERE co.Date_Commande > '2023-01-01';
+    ''')
 
-# Définir la date à partir de laquelle on veut filtrer
-date_limite = '2023-01-01'
+    # Récupérer les résultats
+    clients_apres_2023 = cursor.fetchall()
 
-# Appel de la fonction et affichage des résultats
-clients = obtenir_clients_commandes_apres_date(date_limite)
+    # Afficher les clients
+    if clients_apres_2023:
+        print("Clients ayant passé des commandes après le 01/01/2023 :")
+        for client in clients_apres_2023:
+            print(f"ID : {client[0]}, Nom : {client[1]}, Prénom : {client[2]}")
+    else:
+        print("Aucun client n'a passé de commandes après le 01/01/2023.")
 
-print("Clients ayant passé des commandes après le 01/01/2023 :")
-for client in clients:
-    print(f"ID: {client[0]}, Nom: {client[1]}, Prénom: {client[2]}")
-
-# Fermer la connexion à la base de données
-conn.close()
+except sqlite3.IntegrityError as e:
+    print(f"Erreur d'intégrité : {e}")
+except Exception as e:
+    print(f"Une erreur s'est produite : {e}")
+finally:
+    # Fermer la connexion à la base de données
+    conn.close()
