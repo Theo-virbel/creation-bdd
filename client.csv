@@ -1,0 +1,66 @@
+Nom,Prenom,Email,Telephone,Date_Naissance,Adresse,Consentement_Marketing
+Dupont,Jean,jean.dupont@example.com,0612345678,1980-05-10,10 rue de Paris,1
+Martin,Claire,claire.martin@example.com,0623456789,1992-07-15,20 avenue des Champs,0
+Bernard,Luc,luc.bernard@example.com,0634567890,1995-04-23,15 rue de Lyon,1
+Lemoine,Sophie,sophie.lemoine@example.com,0645678901,1985-09-20,30 boulevard Saint-Michel,1
+Moreau,Paul,paul.moreau@example.com,0656789012,1978-11-30,25 rue de la République,0
+Durand,Alice,alice.durand@example.com,0667890123,1990-01-05,5 avenue de l'Europe,1
+Petit,Marie,marie.petit@example.com,0678901234,1988-02-15,18 rue des Fleurs,0
+Roux,Antoine,antoine.roux@example.com,0689012345,1982-03-10,22 rue du Moulin,1
+Garnier,Léa,lea.garnier@example.com,0690123456,1993-04-22,8 rue des Vignes,1
+Fontaine,Nicolas,nicolas.fontaine@example.com,0601234567,1986-05-18,14 boulevard de la Gare,0
+Martin,Chloe,chloe.martin@example.com,0612345678,1991-06-30,17 avenue des Cerisiers,1
+Leroy,Marc,marc.leroy@example.com,0623456789,1989-07-20,12 rue de la Liberté,0
+Leblanc,Emma,emma.leblanc@example.com,0634567890,1994-08-12,9 place de l'Hôtel de Ville,1
+Boucher,Lucas,lucas.boucher@example.com,0645678901,1987-09-08,4 chemin de la Plage,1
+David,Sandrine,sandrine.david@example.com,0656789012,1983-10-16,3 rue du Parc,0
+Noel,Julien,julien.noel@example.com,0667890123,1981-11-25,6 rue des Alpes,1
+Pires,Audrey,audrey.pires@example.com,0678901234,1990-12-04,11 avenue du Général,0
+Lamy,Thomas,thomas.lamy@example.com,0689012345,1995-01-10,7 rue de la Paix,1
+Mercier,Laetitia,laetitia.mercier@example.com,0690123456,1988-02-17,2 rue des Lilas,1
+Giraud,Florian,florian.giraud@example.com,0601234567,1991-03-25,20 rue des Acacias,0
+Clement,Stéphanie,stephanie.clement@example.com,0612345678,1984-04-13,16 avenue des Cèdres,1
+Joly,Vincent,vincent.joly@example.com,0623456789,1982-05-29,21 rue des Écoles,0
+Chevalier,Ines,ines.chevalier@example.com,0634567890,1993-06-22,27 avenue des Combattants,1
+Dupuis,Lilian,lilian.dupuis@example.com,0645678901,1986-07-07,10 rue de l'Église,0
+Martinez,Célia,celia.martinez@example.com,0656789012,1990-08-19,15 place de la Mairie,1
+Laurent,Gabriel,gabriel.laurent@example.com,0667890123,1981-09-15,13 avenue de l'Industrie,1
+Carpentier,Jade,jade.carpentier@example.com,0678901234,1995-10-10,8 rue des Sources,0
+Renaud,Theo,théo.renaud@example.com,0689012345,1992-11-28,19 rue du Vallon,1
+Martinez,Ana,a.martinez@example.com,0690123456,1989-12-18,22 avenue de l'Atlantique,1
+Leroux,Lucie,lucie.leroux@example.com,0601234567,1984-01-22,14 boulevard des Marins,0
+Simon,Eliott,eliott.simon@example.com,0612345678,1987-02-14,3 rue des Érables,1
+Bourgeois,Manon,manon.bourgeois@example.com,0623456789,1990-03-30,11 avenue des Cerisiers,1
+Dumont,Maxime,maxime.dumont@example.com,0634567890,1991-04-18,16 rue de la Liberté,0
+Gonzalez,Camille,camille.gonzalez@example.com,0645678901,1986-05-05,9 avenue du Languedoc,1
+Guillaume,Romain,romain.guillaume@example.com,0656789012,1993-06-12,12 boulevard des Lys,0
+Lucas,Aude,aude.lucas@example.com,0667890123,1988-07-24,25 rue des Champs,1
+Simon,Pauline,pauline.simon@example.com,0678901234,1990-08-15,2 rue du Cèdre,0
+Gosselin,Thierry,thierry.gosselin@example.com,0689012345,1984-09-01,4 chemin de la Mer,1
+Vasseur,Aurélie,aurelie.vasseur@example.com,0690123456,1992-10-29,17 rue des Pins,1
+Bouchard,François,francois.bouchard@example.com,0601234567,1985-11-18,3 avenue de la République,0
+Blanc,Louise,louise.blanc@example.com,0612345678,1989-12-20,10 rue des Sables,1
+Roy,Sacha,sacha.roy@example.com,0623456789,1994-01-10,14 avenue des Fleurs,0
+Lemoine,Estelle,estelle.lemoine@example.com,0634567890,1993-02-25,19 rue des Roses,1
+Meyer,Oscar,oscar.meyer@example.com,0645678901,1987-03-15,6 avenue des Champs,1
+Gilles,Romane,romane.gilles@example.com,0656789012,1988-04-05,21 rue du Jardin,0
+Renard,Eva,eva.renard@example.com,0667890123,1995-05-20,8 rue de la Mer,1
+Perret,Matthieu,matthieu.perret@example.com,0678901234,1991-06-30,3 chemin des Lacs,0
+Fuchs,Charlotte,charlotte.fuchs@example.com,0689012345,1982-07-14,4 avenue des Acacias,1
+Goulet,Cédric,cedric.goulet@example.com,0690123456,1984-08-24,7 rue des Lilas,1
+Jardin,Alice,alice.jardin@example.com,0601234567,1990-09-12,12 boulevard des Tilleuls,0
+Masson,Victor,victor.masson@example.com,0612345678,1993-10-03,5 rue des Chênes,1
+Richard,Camille,camille.richard@example.com,0623456789,1991-11-20,15 avenue des Lilas,0
+Henry,Louise,louise.henry@example.com,0634567890,1988-12-22,20 rue du Verger,1
+Lebrun,Chloé,chloe.lebrun@example.com,0645678901,1990-01-11,3 rue de l'Étang,1
+Cohen,Jules,jules.cohen@example.com,0656789012,1983-02-05,8 avenue de la Plage,0
+Pierre,Clara,clara.pierre@example.com,0667890123,1994-03-14,9 chemin des Lavandes,1
+Pichon,Sébastien,sebastien.pichon@example.com,0678901234,1986-04-25,7 rue des Palmiers,1
+Marchetti,Anne,anne.marchetti@example.com,0689012345,1992-05-08,10 avenue des Arcades,0
+Fernandez,Victor,victor.fernandez@example.com,0690123456,1985-06-18,11 rue du Mont,1
+Giraud,Mathilde,mathilde.giraud@example.com,0601234567,1989-07-02,22 rue de la Source,0
+Blanchard,Alain,alain.blanchard@example.com,0612345678,1988-08-27,5 avenue des Oiseaux,1
+Bernard,Lucie,lucie.bernard@example.com,0623456789,1991-09-16,30 boulevard des Cèdres,0
+Lemaitre,Aline,aline.lemaitre@example.com,0634567890,1994-10-25,1 rue des Acacias,1
+
+
