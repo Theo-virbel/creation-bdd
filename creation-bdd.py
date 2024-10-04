@@ -123,6 +123,19 @@ try:
     else:
         print(f"Aucune commande trouvée pour le client avec ID {client_id}, donc le montant total est 0 euros.")
 
+    # Calculer le montant total des commandes du client avec l'ID 61
+    cursor.execute(''' 
+    SELECT SUM(Montant_Commande) FROM Commande 
+    WHERE Client_ID = 61; 
+    ''')
+
+    total_montant_client_61 = cursor.fetchone()[0]
+
+    if total_montant_client_61 is not None:
+        print(f"Le montant total des commandes du client avec ID 61 est : {total_montant_client_61:.2f} euros.")
+    else:
+        print(f"Aucune commande trouvée pour le client avec ID 61, donc le montant total est 0 euros.")
+
     # Récupérer les commandes de Kelly
     cursor.execute(''' 
     SELECT * FROM Commande 
@@ -135,8 +148,6 @@ try:
         print("Commandes du client Kelly :")
         for commande in commandes_kelly:
             print(f"Commande ID : {commande[0]}, Date : {commande[1]}, Montant : {commande[2]}")
-    else:
-        print("Aucune commande trouvée pour le client Kelly.")
 
     # Récupérer les clients ayant passé des commandes de plus de 100 euros
     cursor.execute(''' 
@@ -179,3 +190,4 @@ except Exception as e:
 finally:
     # Fermer la connexion à la base de données
     conn.close()
+
